@@ -1,0 +1,201 @@
+{
+  "name": "Automation 1: Lead Capture & Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Automation 1\n\nFirst automation to understand of nodes and inside settings or configuration.\n",
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "f27a3cd6-ea28-45f3-95ff-3e3848c4cb04",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Consultation Form",
+        "formDescription": "Hey there, glad to meet you. Please fill in the details to connect with us for consultation.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Service",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Consultation"
+                  },
+                  {
+                    "option": "Training"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Lets Aify your world"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -304,
+        -32
+      ],
+      "id": "d4220473-d47d-47b3-893d-7b3f3fab2044",
+      "name": "On form submission",
+      "webhookId": "7613b306-feb4-4138-859b-833300cf9c3b",
+      "notesInFlow": true,
+      "notes": "Form"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1x3aIR0x7GXCjcgkoxNzNzF67c5HxgjO3fprq0L-HmBY",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1x3aIR0x7GXCjcgkoxNzNzF67c5HxgjO3fprq0L-HmBY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1x3aIR0x7GXCjcgkoxNzNzF67c5HxgjO3fprq0L-HmBY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Service": "={{ $json.Service }}",
+            "Time": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -96,
+        -32
+      ],
+      "id": "95315da4-2164-49c5-a92b-a853717b0ad7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "g3oqndpNQvotgelh",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "First Sheet"
+    },
+    {
+      "parameters": {
+        "sendTo": "rupesh2211120@iimscollege.edu.np",
+        "subject": "Form Lead Update",
+        "emailType": "text",
+        "message": "=Hey Rupesh,\n\nHow are you?\n\nThere is a new lead on the form. \n\nName:  {{ $json.Name }}\nService: {{ $json.Service }}\nTime: {{ $json.Time }}\n\nSource: {{ $workflow.id }}\n\nThanks!",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        -32
+      ],
+      "id": "1a76528c-5489-467d-8b9c-7f300d6ef26a",
+      "name": "Send a message",
+      "webhookId": "d6dc0483-bf43-4a8c-b752-4d9a79fe9fff",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TIZhaZWl2K8d0rDY",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2788a718-bd06-4e5d-80e4-16104d744ffd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bae3680a6a6d793df43080626d4e64e9962fd3ac6fa19835620e36c1aa460ce4"
+  },
+  "id": "6fWw6qCFVRdinv8f",
+  "tags": []
+}
