@@ -18,3 +18,25 @@ This repository contains a collection of automation workflows built with [n8n](h
 
 **Screenshot:**  
 ![Real Estate Workflow](./screenshots/automation2.png)
+
+### 3. WhatsApp AI Agent for Order Management (WhatsApp + Google Gemini + Google Sheets)
+
+**Description:** Automates order management through WhatsApp using an intelligent AI agent powered by Google Gemini. When customers send messages via WhatsApp, the AI agent handles inquiries, checks inventory availability, and processes orders seamlessly. The system maintains conversation memory and uses Google Sheets as both a database and toolkit for real-time operations.
+
+**Key Features:**
+- **Smart Order Processing:** AI agent understands customer requests and processes food orders
+- **Real-time Inventory Check:** Automatically verifies item availability before confirming orders
+- **Conversation Memory:** Maintains context throughout the chat session for natural interactions
+- **FAQ Support:** Instantly answers common customer questions
+- **Automated Data Management:** Orders are automatically saved to Google Sheets with customer details
+
+**How it works:**
+1. Customer sends a message via WhatsApp (trigger activated)
+2. **Google Gemini AI Agent** processes the message with conversation memory
+3. Agent checks **Inventory Sheet** to verify item availability (Available/Out of Stock)
+4. For questions, agent references **FAQ Sheet** to provide instant answers
+5. For orders, agent validates items and saves order details to **Orders Sheet**
+6. AI responds to customer with order confirmation or alternative suggestions
+
+**Screenshot:**  
+![Real Estate Workflow](./screenshots/automation3.png)
