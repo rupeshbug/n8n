@@ -1,0 +1,299 @@
+{
+  "name": "Automation 2: Real Estate Automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "36a0a92b-ecf2-4b8f-aad2-52e8c85b7e3d",
+      "name": "Initial Trigger",
+      "notes": "Initial Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY",
+          "mode": "list",
+          "cachedResultName": "Potential_Customers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        0
+      ],
+      "id": "761af7d6-149b-4dea-8494-26a751dbbbc2",
+      "name": "Get data from Google Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "g3oqndpNQvotgelh",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "Get data from Google Sheets"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.genderize.io/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $('Get data from Google Sheet').item.json.Name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        384,
+        0
+      ],
+      "id": "61d6acf3-e896-4d46-aa83-02447b751277",
+      "name": "HTTP Request to genderize.io"
+    },
+    {
+      "parameters": {
+        "url": "https://api.nationalize.io/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $('Get data from Google Sheet').item.json.Name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "c193c7e4-6243-473d-b45f-587fe3221d30",
+      "name": "HTTP Request to nationalize.io"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY",
+          "mode": "list",
+          "cachedResultName": "Potential_Customers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cd23VoYMTzn9gRuMbIpZvAaLOqn8IcI5jrYErcex2YY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Get data from Google Sheet').item.json.id }}",
+            "Name": "={{ $('Get data from Google Sheet').item.json.Name }}",
+            "Number": "={{ $('Get data from Google Sheet').item.json.Number }}",
+            "Budget": "={{ $('Get data from Google Sheet').item.json.Budget }}",
+            "Gender": "={{ $('HTTP Request to genderize.io').item.json.gender }}",
+            "Nationality": "={{ $('HTTP Request to nationalize.io').item.json.country.first().country_id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number",
+              "displayName": "Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nationality",
+              "displayName": "Nationality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        0
+      ],
+      "id": "25b6e9c1-fe45-42f0-9de9-d6f851fe4677",
+      "name": "Update the data in the sheets obtained from the API",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "g3oqndpNQvotgelh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "rupesh2211120@iimscollege.edu.np",
+        "subject": "New Client",
+        "emailType": "text",
+        "message": "=Hey Rupesh,\n\nA new client {{ $json.Name }} has signed up. Below are the details:\n\nNumber: {{ $json.Number }}\nBudget: {{ $json.Budget }}\n\nBelow is the expected gender and nationality.\n\nGender: {{ $json.Gender }}\nNationality: {{ $json.Nationality }}\n\nDo make sure to connect with him at {{ $json.Number }}.\n\nThanks!",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "bcd798ef-5393-4beb-a2c1-b5549d64f1ce",
+      "name": "Send a mail ",
+      "webhookId": "e239ce96-423c-48ba-ab92-69248b62aaf5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TIZhaZWl2K8d0rDY",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Initial Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get data from Google Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get data from Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request to genderize.io",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request to genderize.io": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request to nationalize.io",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request to nationalize.io": {
+      "main": [
+        [
+          {
+            "node": "Update the data in the sheets obtained from the API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update the data in the sheets obtained from the API": {
+      "main": [
+        [
+          {
+            "node": "Send a mail ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "58b5be12-ea63-4d8b-8b75-1e7d191f97f6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bae3680a6a6d793df43080626d4e64e9962fd3ac6fa19835620e36c1aa460ce4"
+  },
+  "id": "2Q3IlZBV424HrVrT",
+  "tags": []
+}
