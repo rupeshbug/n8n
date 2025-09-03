@@ -193,6 +193,7 @@
       ],
       "id": "25b6e9c1-fe45-42f0-9de9-d6f851fe4677",
       "name": "Update the data in the sheets obtained from the API",
+      "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "g3oqndpNQvotgelh",
@@ -203,9 +204,8 @@
     {
       "parameters": {
         "sendTo": "rupesh2211120@iimscollege.edu.np",
-        "subject": "New Client",
-        "emailType": "text",
-        "message": "=Hey Rupesh,\n\nA new client {{ $json.Name }} has signed up. Below are the details:\n\nNumber: {{ $json.Number }}\nBudget: {{ $json.Budget }}\n\nBelow is the expected gender and nationality.\n\nGender: {{ $json.Gender }}\nNationality: {{ $json.Nationality }}\n\nDo make sure to connect with him at {{ $json.Number }}.\n\nThanks!",
+        "subject": "={{ $json.message.content.subject }}",
+        "message": "={{ $json.message.content.body }}",
         "options": {
           "appendAttribution": false
         }
@@ -213,7 +213,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1008,
+        1344,
         0
       ],
       "id": "bcd798ef-5393-4beb-a2c1-b5549d64f1ce",
@@ -225,9 +225,62 @@
           "name": "Gmail account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a helpful assistant who helps in easy creation of email. You aim is to provide me with email which I will then be sending on my email ID.\n\nBelow is the format:\n\n```\n\nHey Rupesh,\n\nA new client {{ $json.Name }} has signed up. Below are the details:\n\nNumber: {{ $json.Number }}\nBudget: {{ $json.Budget }}\n\nBelow is the expected gender and nationality.\n\nGender: {{ $json.Gender }}\nNationality: {{ $json.Nationality }}\n\nDo make sure to connect with him at {{ $json.Number }}.\n\nThanks!\n\n```\n\nPlease make sure that the email and clear and short explanation with suggestion if required for the sale.\n\nStrictly give output as a json not missing any key, below is the structure.\n\n{\n\"subject\": \n\"body\":\n}\n\nAlso make sure that body is html friendly as I will be using this via API which supports HTLM formatting and I should see the email more nicely and readable. {{ $json.Name }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "26c6c652-f924-447c-903b-35c645a3c9f6",
+      "name": "OpenAI model",
+      "executeOnce": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "BLPhCAatkbr8wR79",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "OpenAI model": [
+      {
+        "json": {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": {
+              "subject": "New Client Signup - Rupesh",
+              "body": "<p>Hey Rupesh,</p><p>A new client <strong>Rupesh</strong> has signed up. Below are the details:</p><ul><li><strong>Number:</strong> 12345</li><li><strong>Budget:</strong> 100000</li></ul><p>Below is the expected gender and nationality.</p><ul><li><strong>Gender:</strong> male</li><li><strong>Nationality:</strong> IN</li></ul><p>Do make sure to connect with him at <a href=\"tel:12345\">12345</a>.</p><p>Thanks!</p><p><em>Suggestion: Given the budget and client details, prioritizing follow-up within 24 hours may improve conversion chances.</em></p>"
+            },
+            "refusal": null,
+            "annotations": []
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      }
+    ]
+  },
   "connections": {
     "Initial Trigger": {
       "main": [
@@ -277,6 +330,17 @@
       "main": [
         [
           {
+            "node": "OpenAI model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI model": {
+      "main": [
+        [
+          {
             "node": "Send a mail ",
             "type": "main",
             "index": 0
@@ -289,7 +353,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "58b5be12-ea63-4d8b-8b75-1e7d191f97f6",
+  "versionId": "48625f5b-4353-48d3-8c53-cea79fb3cd0c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bae3680a6a6d793df43080626d4e64e9962fd3ac6fa19835620e36c1aa460ce4"
