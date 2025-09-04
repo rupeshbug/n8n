@@ -25,7 +25,7 @@ This repository contains a collection of automation workflows built with [n8n](h
 
 **Key Features:**
 - **Smart Order Processing:** AI agent understands customer requests and processes food orders
-- **Real-time Inventory Check:** Automatically verifies item availability before confirming orders
+- **Real-time Inventory Check:** Automatically verifies item availability before confirming the orders
 - **Conversation Memory:** Maintains context throughout the chat session for natural interactions
 - **FAQ Support:** Instantly answers common customer questions
 - **Automated Data Management:** Orders are automatically saved to Google Sheets with customer details
