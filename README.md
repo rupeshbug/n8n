@@ -33,7 +33,7 @@ This repository contains a collection of automation workflows built with [n8n](h
 **How it works:**
 1. Customer sends a message via WhatsApp (trigger activated)
 2. **Google Gemini AI Agent** processes the message with memory
-3. Agent checks **Inventory Sheet** to verify item availability (Available/Out of Stock)
+3. Agent checks **Inventory Sheet** to verify item availability
 4. For questions, agent references **FAQ Sheet** to provide instant answers
 5. For orders, agent validates items and saves order details to **Orders Sheet**
 6. AI responds to customer with order confirmation or alternative suggestions
