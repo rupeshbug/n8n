@@ -21,7 +21,7 @@ This repository contains a collection of automation workflows built with [n8n](h
 
 ### 3. WhatsApp AI Agent for Order Management (WhatsApp + Google Gemini + Google Sheets)
 
-**Description:** Automates order management through WhatsApp using an intelligent AI agent powered by Google Gemini. When customers send messages via WhatsApp, the AI agent handles inquiries, checks inventory availability, and processes orders seamlessly. The system maintains conversation memory and uses Google Sheets as both a database and toolkit for real-time operations.
+**Description:** Automates order management through WhatsApp using an AI agent powered by Google Gemini. When customers send messages via WhatsApp, the AI agent handles inquiries, checks inventory availability, and processes orders seamlessly. The system maintains conversation memory and uses Google Sheets as both a database and toolkit for real-time operations.
 
 **Key Features:**
 - **Smart Order Processing:** AI agent understands customer requests and processes food orders
